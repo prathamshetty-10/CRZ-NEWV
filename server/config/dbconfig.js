@@ -18,6 +18,7 @@ const config={
 
 const connecttodb=async()=>{
     try{
+        
          const pool=await sql.connect(config);
          
          const data=pool.request().query('select * from name');
