@@ -1,14 +1,34 @@
 
-import sql from 'msnodesqlv8'
-const connectionString="server=LAPTOP-9VV2ENKI\SQLEXPRESS;Database=trialdb;Trusted_Connection=Yes;Driver={SQL Server Native Client 11.0}";
+import sql from 'mssql'
+
+const config={
+    user:"crz",
+    password:"12345678",
+    server:"LAPTOP-9VV2ENKI",
+    database:"testdb",
+    options:{
+        trustServerCertificate:true,
+        trustedConnection:false,
+        enableArithAbort:true,
+        instancename:"SQLEXPRESS"
+    },
+    port:1433
+
+}
 
 const connecttodb=async()=>{
     try{
-    sql.query(connectionString,"",(err,rows)=>{
-        console.log(rows);
-    })
-    //console.log('connected to database');
-    }
+         const pool=await sql.connect(config);
+         const data=pool.request().query('select * from name');
+         data.then(res1=>{
+            console.log('connected to database');
+         }
+         )
+         //pool.request().query('create table newtb(id2 int)');
+         pool.request().query('insert into newtb values(1)');
+         }
+   
+    
     catch(error){
         console.log(error);
     }
