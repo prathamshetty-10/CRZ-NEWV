@@ -70,7 +70,7 @@ const otp=async(req,res,next)=>{
         if(ph_no==process.env.PHNO_ADMIN) role="ADMIN";
         else role="USER"
         const ot=`${Math.floor(1000+Math.random()*9000)}`;
-        //inserting en into user_tb 
+        //inserting into user_tb 
         const pool=await sql.connect(config);
         const data=pool.request().query(`insert into user_tb values('${name}','${ph_no}','${ot}','${role}')`);
         data.then(res1=>{
