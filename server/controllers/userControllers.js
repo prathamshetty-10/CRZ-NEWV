@@ -77,7 +77,7 @@ const otp=async(req,res,next)=>{
             console.log('inserted entry ! ');
          }
          )
-         //creating the otp mand sent to phone
+         //creating the otp and sent to phone
         const client=new twilio(process.env.TWILIO_SID,process.env.TWILIO_AUTH_TOKEN);
         client.messages.create({body:ot,from:'+17856997678',to:`${ph_no}`})
         
