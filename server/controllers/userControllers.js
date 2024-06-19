@@ -89,7 +89,7 @@ const otp=async(req,res,next)=>{
         
     })}
     catch(error){
-       //33333333333333333333
+       
         console.log(error);
     }
 
