@@ -4,6 +4,7 @@ import express from 'express';
 const app=express();
 import cors from 'cors'
 import userRoutes from './routes/userRoutes.js'
+import formRoutes from './routes/formRoutes.js'
 
 
 import cookieParser from 'cookie-parser';
@@ -24,6 +25,7 @@ app.use(morgan('dev'))
 
 
 app.use('/api/user',userRoutes);
+app.use('/api/form',formRoutes);
 app.all('*',(req,res)=>{
     res.status(404).send('OOPS!!! 404 page not found at all');
 
