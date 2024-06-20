@@ -194,8 +194,9 @@ const submitform=async(req,res,next)=>{
 
         const {name,email,addr,sur_num,taluk,village,form_type,pi1,su1,pi2,su2,pi3,su3,pi4,su4,ph_no}=req.body;
         const pool=await sql.connect(config);
+        const form_id=new Date().toLocaleString();;
         
-        const data=pool.request().query(`insert into form_tb values('${ph_no}','${name}','${addr}','${sur_num}','${taluk}','${village}','${form_type}','${pi1}','${su1}','${pi2}','${su2}','${pi3}','${su3}','${pi4}','${su4}','${email}')`);
+        const data=pool.request().query(`insert into form_tb values('${ph_no}','${name}','${addr}','${sur_num}','${taluk}','${village}','${form_type}','${pi1}','${su1}','${pi2}','${su2}','${pi3}','${su3}','${pi4}','${su4}','${email}','${form_id}')`);
         data.then(async(res1)=>{
             if(res1){
                 
