@@ -1,6 +1,8 @@
 
 import cloudinary from 'cloudinary'
 import fs from 'fs/promises'
+import { config } from '../config/dbconfig.js';
+import sql from 'mssql'
 
 import AppError from "../utils/error.util.js";
 const uploadform1=async(req,res,next)=>{
@@ -187,5 +189,39 @@ const uploadchalan=async(req,res,next)=>{
     }
 
 };
+const submitform=async(req,res,next)=>{
+    try{
 
-export {uploadform1,uploadRTC,uploadSS,uploadchalan};
+        const {name,email,addr,sur_num,taluk,village,form_type,pi1,su1,pi2,su2,pi3,su3,pi4,su4,ph_no}=req.body;
+        const pool=await sql.connect(config);
+        
+        const data=pool.request().query(`insert into form_tb values('${ph_no}','${name}','${addr}','${sur_num}','${taluk}','${village}','${form_type}','${pi1}','${su1}','${pi2}','${su2}','${pi3}','${su3}','${pi4}','${su4}','${email}')`);
+        data.then(async(res1)=>{
+            if(res1){
+                
+                res.status(200).json({
+                    success:true,
+                    message:"user form submitted successfully"
+                })
+            }
+            else{
+                
+
+                res.status(500).json({
+                    success:false,
+                    message:"OTP wrong please re send otp"
+                })
+            };
+         }
+         )
+
+
+        
+    }
+    catch(error){
+        return next(new AppError(error,400));
+    }
+
+};
+
+export {uploadform1,uploadRTC,uploadSS,uploadchalan,submitform};
