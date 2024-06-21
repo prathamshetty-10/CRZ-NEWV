@@ -49,6 +49,7 @@ const uploadform1=async(req,res,next)=>{
     catch(error){
         return next(new AppError(error,400));
     }
+   
 
 };
 const uploadRTC=async(req,res,next)=>{
@@ -72,9 +73,10 @@ const uploadRTC=async(req,res,next)=>{
                     fs.rm(`uploads/${req.file.filename}`);
                     console.log('uploaded rtc');
                     next();
+                    
                 }
                 else{
-                    res.status(500).json({
+                    return res.status(500).json({
                         success:false,
                         message:"No cloudinary result"
                     })
@@ -93,6 +95,7 @@ const uploadRTC=async(req,res,next)=>{
     catch(error){
         return next(new AppError(error,400));
     }
+    
 
 };
 const uploadSS=async(req,res,next)=>{
@@ -118,7 +121,7 @@ const uploadSS=async(req,res,next)=>{
                     next();
                 }
                 else{
-                    res.status(500).json({
+                    return res.status(500).json({
                         success:false,
                         message:"No cloudinary result"
                     })
@@ -126,7 +129,7 @@ const uploadSS=async(req,res,next)=>{
     
             }
         else{
-            res.status(500).json({
+            return res.status(500).json({
                 success:false,
                 message:"no file uploaded"
             })
@@ -158,10 +161,11 @@ const uploadchalan=async(req,res,next)=>{
                     req.pi4=pubid;
                     req.su4=secureurl;
                     fs.rm(`uploads/${req.file.filename}`);
+                    console.log('uploaded 4th')
                     next();
                 }
                 else{
-                    res.status(500).json({
+                    return res.status(500).json({
                         success:false,
                         message:"No cloudinary result"
                     })
@@ -169,7 +173,7 @@ const uploadchalan=async(req,res,next)=>{
     
             }
         else{
-            res.status(500).json({
+            return res.status(500).json({
                 success:false,
                 message:"no file uploaded"
             })
@@ -194,6 +198,12 @@ const submitform=async(req,res,next)=>{
         const su2=req.su2;
         const su3=req.su3;
         const su4=req.su4;
+        if(!name|| !email||!addr||!sur_num||!taluk||!village||!form_type||!ph_no||!pi1||!su1||!pi2||!su2||!pi3||!su3||!pi4||!su4){
+            res.status(500).json({
+                success:false,
+                message:"fill all fields"
+            })
+        }
 
         const pool=await sql.connect(config);
         const form_id=new Date().toLocaleString();;
