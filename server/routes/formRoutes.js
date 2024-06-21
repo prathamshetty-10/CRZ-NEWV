@@ -11,9 +11,11 @@ router.post('/upload/ss',upload.single('ss'),uploadSS);
 router.post('/upload/chalan',upload.single('chalan'),uploadchalan);
 router.post('/submit',submitform);
 //user ka forms
-router.get('/allformsnull',getallformsnull);
-router.get('/allformsacc',getallformsacc);
-router.get('/allformsrej',getallformsrej);
+router.get('/userformsnull',getallformsnull);
+router.get('/userformsacc',getallformsacc);
+router.get('/userformsrej',getallformsrej);
+//admin ka forms
+router.get('/adminformsnull',agetallformsnull);
 
 
 export default router;
