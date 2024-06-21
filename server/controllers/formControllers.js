@@ -376,4 +376,40 @@ const getallformsrej=async(req,res,next)=>{
 
 };
 
-export {uploadform1,uploadRTC,uploadSS,uploadchalan,submitform,getallformsacc,getallformsnull,getallformsrej};
+
+//admin side forms returned
+const agetallformsnull=async(req,res,next)=>{
+    try{
+        const pool=await sql.connect(config);
+        const data=pool.request().query(`select * from form_tb where status='null'`);
+        data.then(async(res1)=>{
+            if(res1){
+                
+                res.status(200).json({
+                    success:true,
+                    message:"all unattended forms returned",
+                    forms:res1.recordset
+                })
+            }
+            else{
+                
+
+                res.status(500).json({
+                    success:false,
+                    message:"error in getting all forms"
+                })
+            };
+         }
+         )
+
+
+        
+    }
+    catch(error){
+        return next(new AppError(error,400));
+    }
+
+};
+
+
+export {uploadform1,uploadRTC,uploadSS,uploadchalan,submitform,getallformsacc,getallformsnull,getallformsrej,agetallformsnull};
