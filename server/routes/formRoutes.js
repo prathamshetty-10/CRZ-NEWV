@@ -5,11 +5,11 @@ import {upload } from "../middleware/multer.middleware.js"
 
 const router=express.Router();
 
-router.post('/upload/form1',upload.single('form1'),uploadform1);
-router.post('/upload/rtc',upload.single('rtc'),uploadRTC);
-router.post('/upload/ss',upload.single('ss'),uploadSS);
-router.post('/upload/chalan',upload.single('chalan'),uploadchalan);
-router.post('/submit',submitform);
+//router.post('/upload/form1',upload.single('form1'),uploadform1);
+//router.post('/upload/rtc',upload.single('rtc'),uploadRTC);
+//router.post('/upload/ss',upload.single('ss'),uploadSS);
+//router.post('/upload/chalan',upload.single('chalan'),uploadchalan);
+router.post('/submit',upload.single('form1'),uploadform1,upload.single('rtc'),uploadRTC,upload.single('ss'),uploadSS,upload.single('chalan'),uploadchalan,submitform);
 
 
 
