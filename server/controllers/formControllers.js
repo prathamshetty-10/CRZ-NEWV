@@ -22,13 +22,12 @@ const uploadform1=async(req,res,next)=>{
                 if(result){
                     pubid=result.public_id;
                     secureurl=result.secure_url;
+                    req.pi1=pubid;
+                    req.su1=secureurl;
                     fs.rm(`uploads/${req.file.filename}`);
-                    res.status(200).json({
-                        success:true,
-                        message:"uploaded successfully",
-                        public_id:pubid,
-                        secure_url:secureurl
-                    })
+                    console.log('uploaded first form');
+                    next();
+
                 }
                 else{
                     res.status(500).json({
@@ -68,13 +67,11 @@ const uploadRTC=async(req,res,next)=>{
                 if(result){
                     pubid=result.public_id;
                     secureurl=result.secure_url;
+                    req.pi2=pubid;
+                    req.su2=secureurl;
                     fs.rm(`uploads/${req.file.filename}`);
-                    res.status(200).json({
-                        success:true,
-                        message:"uploaded successfully",
-                        public_id:pubid,
-                        secure_url:secureurl
-                    })
+                    console.log('uploaded rtc');
+                    next();
                 }
                 else{
                     res.status(500).json({
@@ -114,13 +111,11 @@ const uploadSS=async(req,res,next)=>{
                 if(result){
                     pubid=result.public_id;
                     secureurl=result.secure_url;
+                    req.pi3=pubid;
+                    req.su3=secureurl;
                     fs.rm(`uploads/${req.file.filename}`);
-                    res.status(200).json({
-                        success:true,
-                        message:"uploaded successfully",
-                        public_id:pubid,
-                        secure_url:secureurl
-                    })
+                    console.log('uploaded ss');
+                    next();
                 }
                 else{
                     res.status(500).json({
@@ -160,13 +155,10 @@ const uploadchalan=async(req,res,next)=>{
                 if(result){
                     pubid=result.public_id;
                     secureurl=result.secure_url;
+                    req.pi4=pubid;
+                    req.su4=secureurl;
                     fs.rm(`uploads/${req.file.filename}`);
-                    res.status(200).json({
-                        success:true,
-                        message:"uploaded successfully",
-                        public_id:pubid,
-                        secure_url:secureurl
-                    })
+                    next();
                 }
                 else{
                     res.status(500).json({
@@ -193,7 +185,16 @@ const uploadchalan=async(req,res,next)=>{
 const submitform=async(req,res,next)=>{
     try{
 
-        const {name,email,addr,sur_num,taluk,village,form_type,pi1,su1,pi2,su2,pi3,su3,pi4,su4,ph_no}=req.body;
+        const {name,email,addr,sur_num,taluk,village,form_type,ph_no}=req.body;
+        const pi1=req.pi1;
+        const pi2=req.pi2;
+        const pi3=req.pi3;
+        const pi4=req.pi4;
+        const su1=req.su1;
+        const su2=req.su2;
+        const su3=req.su3;
+        const su4=req.su4;
+
         const pool=await sql.connect(config);
         const form_id=new Date().toLocaleString();;
         
