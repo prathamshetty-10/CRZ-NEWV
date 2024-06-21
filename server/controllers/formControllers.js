@@ -29,7 +29,6 @@ const uploadform1=async(req,res,next)=>{
                         message:"first file uploaded",
                         public_id:pubid,
                         secure_url:secureurl
-
                     })
                     
 
@@ -73,11 +72,14 @@ const uploadRTC=async(req,res,next)=>{
                 if(result){
                     pubid=result.public_id;
                     secureurl=result.secure_url;
-                    req.pi2=pubid;
-                    req.su2=secureurl;
+                    
                     fs.rm(`uploads/${req.file.filename}`);
-                    console.log('uploaded rtc');
-                    next();
+                    res.status(200).json({
+                        success:true,
+                        message:"rtc uploaded",
+                        public_id:pubid,
+                        secure_url:secureurl
+                    })
                     
                 }
                 else{
@@ -119,11 +121,14 @@ const uploadSS=async(req,res,next)=>{
                 if(result){
                     pubid=result.public_id;
                     secureurl=result.secure_url;
-                    req.pi3=pubid;
-                    req.su3=secureurl;
+                    
                     fs.rm(`uploads/${req.file.filename}`);
-                    console.log('uploaded ss');
-                    next();
+                    res.status(200).json({
+                        success:true,
+                        message:"servey scetch uploaded",
+                        public_id:pubid,
+                        secure_url:secureurl
+                    })
                 }
                 else{
                     return res.status(500).json({
@@ -163,11 +168,14 @@ const uploadchalan=async(req,res,next)=>{
                 if(result){
                     pubid=result.public_id;
                     secureurl=result.secure_url;
-                    req.pi4=pubid;
-                    req.su4=secureurl;
+                    
                     fs.rm(`uploads/${req.file.filename}`);
-                    console.log('uploaded 4th')
-                    next();
+                    res.status(200).json({
+                        success:true,
+                        message:"chalan",
+                        public_id:pubid,
+                        secure_url:secureurl
+                    })
                 }
                 else{
                     return res.status(500).json({
