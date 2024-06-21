@@ -212,7 +212,7 @@ const submitform=async(req,res,next)=>{
         }
         const status="null";
         const pool=await sql.connect(config);
-        const form_id=new Date().toLocaleString();;
+        const form_id=new Date().toLocaleString();
         
         const data=pool.request().query(`insert into form_tb values('${ph_no}','${name}','${addr}','${sur_num}','${taluk}','${village}','${form_type}','${pi1}','${su1}','${pi2}','${su2}','${pi3}','${su3}','${pi4}','${su4}','${email}','${form_id}','${status}')`);
         data.then(async(res1)=>{
@@ -242,5 +242,138 @@ const submitform=async(req,res,next)=>{
     }
 
 };
+//user forms returned
+const getallformsnull=async(req,res,next)=>{
+    try{
 
-export {uploadform1,uploadRTC,uploadSS,uploadchalan,submitform};
+        const {ph_no}=req.body;
+        
+        if(!ph_no){
+            res.status(500).json({
+                success:false,
+                message:"send phone number"
+            })
+        }
+        
+        const pool=await sql.connect(config);
+        
+        
+        const data=pool.request().query(`select * from form_tb where ph_no='${ph_no}' and status='null'`);
+        data.then(async(res1)=>{
+            if(res1){
+                
+                res.status(200).json({
+                    success:true,
+                    message:"all unattended forms returned",
+                    forms:res1.recordset
+                })
+            }
+            else{
+                
+
+                res.status(500).json({
+                    success:false,
+                    message:"error in getting all forms"
+                })
+            };
+         }
+         )
+
+
+        
+    }
+    catch(error){
+        return next(new AppError(error,400));
+    }
+
+};
+const getallformsacc=async(req,res,next)=>{
+    try{
+
+        const {ph_no}=req.body;
+        
+        if(!ph_no){
+            res.status(500).json({
+                success:false,
+                message:"send phone number"
+            })
+        }
+        
+        const pool=await sql.connect(config);
+        
+        
+        const data=pool.request().query(`select * from form_tb where ph_no='${ph_no}' and status='accepted'`);
+        data.then(async(res1)=>{
+            if(res1){
+                
+                res.status(200).json({
+                    success:true,
+                    message:"all accepted forms returned",
+                    forms:res1.recordset
+                })
+            }
+            else{
+                
+
+                res.status(500).json({
+                    success:false,
+                    message:"error in getting all forms"
+                })
+            };
+         }
+         )
+
+
+        
+    }
+    catch(error){
+        return next(new AppError(error,400));
+    }
+
+};
+const getallformsrej=async(req,res,next)=>{
+    try{
+
+        const {ph_no}=req.body;
+        
+        if(!ph_no){
+            res.status(500).json({
+                success:false,
+                message:"send phone number"
+            })
+        }
+        
+        const pool=await sql.connect(config);
+        
+        
+        const data=pool.request().query(`select * from form_tb where ph_no='${ph_no}' and status='rejected'`);
+        data.then(async(res1)=>{
+            if(res1){
+                
+                res.status(200).json({
+                    success:true,
+                    message:"all rejected forms returned",
+                    forms:res1.recordset
+                })
+            }
+            else{
+                
+
+                res.status(500).json({
+                    success:false,
+                    message:"error in getting all forms"
+                })
+            };
+         }
+         )
+
+
+        
+    }
+    catch(error){
+        return next(new AppError(error,400));
+    }
+
+};
+
+export {uploadform1,uploadRTC,uploadSS,uploadchalan,submitform,getallformsacc,getallformsnull,getallformsrej};
