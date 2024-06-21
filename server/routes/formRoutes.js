@@ -1,6 +1,6 @@
 import express from "express";
 
-import {uploadform1,uploadchalan,uploadRTC,uploadSS,submitform,getallformsnull,getallformsacc,getallformsrej} from "../controllers/formControllers.js";
+import {uploadform1,uploadchalan,uploadRTC,uploadSS,submitform,getallformsnull,getallformsacc,getallformsrej,agetallformsacc,agetallformsnull,agetallformsrej} from "../controllers/formControllers.js";
 import {upload } from "../middleware/multer.middleware.js"
 
 const router=express.Router();
@@ -17,6 +17,7 @@ router.get('/userformsrej',getallformsrej);
 //admin ka forms
 router.get('/adminformsnull',agetallformsnull);
 router.get('/adminformsacc',agetallformsacc);
+router.get('/adminformsrej',agetallformsrej);
 
 
 
