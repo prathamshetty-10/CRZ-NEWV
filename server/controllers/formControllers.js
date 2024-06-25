@@ -214,7 +214,7 @@ const submitform=async(req,res,next)=>{
         const pool=await sql.connect(config);
         const form_id=new Date().toLocaleString();
         
-        const data=pool.request().query(`insert into form_tb values('${ph_no}','${name}','${addr}','${sur_num}','${taluk}','${village}','${form_type}','${pi1}','${su1}','${pi2}','${su2}','${pi3}','${su3}','${pi4}','${su4}','${email}','${form_id}','${status}','null','null')`);
+        const data=pool.request().query(`insert into form_tb values('${ph_no}','${name}','${addr}','${sur_num}','${taluk}','${village}','${form_type}','${pi1}','${su1}','${pi2}','${su2}','${pi3}','${su3}','${pi4}','${su4}','${email}','${form_id}','${status}','null','null','null')`);
         data.then(async(res1)=>{
             if(res1){
                 
@@ -381,7 +381,7 @@ const getallformsrej=async(req,res,next)=>{
 const agetallformsnull=async(req,res,next)=>{
     try{
         const pool=await sql.connect(config);
-        const data=pool.request().query(`select * from form_tb where status='null' and reasonRejection='null`);
+        const data=pool.request().query(`select * from form_tb where status='null' and reasonRejection='null'`);
         data.then(async(res1)=>{
             if(res1){
                 
@@ -507,6 +507,90 @@ const agetallformsrejSub=async(req,res,next)=>{
 
 };
 
+//accepting and rejection
+const acceptForm=async(req,res,next)=>{
+    try{
+        const {form_id,ph_no}=req.body;
+        let pubid='';
+        let secureurl='';
+
+        if(req.file){
+            
+            const options = {
+                folder:`${ph_no}`,
+                use_filename: true,
+                unique_filename: false,
+                overwrite: true,
+              };
+            
+            const result=await cloudinary.v2.uploader.upload(req.file.path,options);
+            if(result){
+                pubid=result.public_id;
+                secureurl=result.secure_url;
+                fs.rm(`uploads/${req.file.filename}`);
+                console.log('uploaded clearance form');
+                
+            }
+            else{
+                res.status(500).json({
+                    success:false,
+                    message:"No cloudinary result"
+                })
+            }
+
+        }
+    else{
+        res.status(500).json({
+            success:false,
+            message:"no file uploaded"
+        })
 
 
-export {uploadform1,uploadRTC,uploadSS,uploadchalan,submitform,getallformsacc,getallformsnull,getallformsrej,agetallformsnull,agetallformsacc,agetallformsrej};
+    }
+
+        if(pubid != '' && secureurl !=''){
+        const pool=await sql.connect(config);
+        const data=pool.request().query(`update form_tb set status='accepted',clearance='${secureurl}',clearancepi='${pubid}' where form_id='${form_id}'`);
+        data.then(async(res1)=>{
+            if(res1){
+                
+                res.status(200).json({
+                    success:true,
+                    message:"accepted the form",
+                    
+                })
+            }
+            else{
+                
+
+                res.status(500).json({
+                    success:false,
+                    message:"error in accepting"
+                })
+            };
+         }
+         )
+
+
+        }
+        else{
+            res.status(500).json({
+                success:false,
+                message:"error in uploading"
+            })
+        }
+    }
+    catch(error){
+        return next(new AppError(error,400));
+    }
+
+};
+
+
+
+
+
+export {uploadform1,uploadRTC,uploadSS,uploadchalan,
+    submitform,getallformsacc,getallformsnull,
+    getallformsrej,agetallformsnull,agetallformsacc,agetallformsrej,agetallformsrejSub,
+    acceptForm};
