@@ -585,7 +585,41 @@ const acceptForm=async(req,res,next)=>{
     }
 
 };
+const rejectForm=async(req,res,next)=>{
+    try{
+        const {form_id,rejMessage}=req.body;
+        
 
+    
+
+      
+        const pool=await sql.connect(config);
+        const data=pool.request().query(`update form_tb set status='rejected',reasonRejection='${rejMessage}' where form_id='${form_id}'`);
+        data.then(async(res1)=>{
+            if(res1){
+                
+                res.status(200).json({
+                    success:true,
+                    message:"rejected the form",
+                    
+                })
+            }
+            else{
+                
+
+                res.status(500).json({
+                    success:false,
+                    message:"error in rejecting"
+                })
+            };
+         }
+         )
+    }
+    catch(error){
+        return next(new AppError(error,400));
+    }
+
+};
 
 
 
@@ -593,4 +627,4 @@ const acceptForm=async(req,res,next)=>{
 export {uploadform1,uploadRTC,uploadSS,uploadchalan,
     submitform,getallformsacc,getallformsnull,
     getallformsrej,agetallformsnull,agetallformsacc,agetallformsrej,agetallformsrejSub,
-    acceptForm};
+    acceptForm,rejectForm};
