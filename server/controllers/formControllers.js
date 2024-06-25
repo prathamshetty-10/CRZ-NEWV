@@ -381,7 +381,7 @@ const getallformsrej=async(req,res,next)=>{
 const agetallformsnull=async(req,res,next)=>{
     try{
         const pool=await sql.connect(config);
-        const data=pool.request().query(`select * from form_tb where status='null'`);
+        const data=pool.request().query(`select * from form_tb where status='null' and reasonRejection='null`);
         data.then(async(res1)=>{
             if(res1){
                 
@@ -474,6 +474,39 @@ const agetallformsrej=async(req,res,next)=>{
     }
 
 };
+const agetallformsrejSub=async(req,res,next)=>{
+    try{
+        const pool=await sql.connect(config);
+        const data=pool.request().query(`select * from form_tb where status='null' && reasonRejection <> 'null'`);
+        data.then(async(res1)=>{
+            if(res1){
+                
+                res.status(200).json({
+                    success:true,
+                    message:"all rejected and resubmitted  forms returned",
+                    forms:res1.recordset
+                })
+            }
+            else{
+                
+
+                res.status(500).json({
+                    success:false,
+                    message:"error in getting all rejected and resubmitted forms"
+                })
+            };
+         }
+         )
+
+
+        
+    }
+    catch(error){
+        return next(new AppError(error,400));
+    }
+
+};
+
 
 
 export {uploadform1,uploadRTC,uploadSS,uploadchalan,submitform,getallformsacc,getallformsnull,getallformsrej,agetallformsnull,agetallformsacc,agetallformsrej};
