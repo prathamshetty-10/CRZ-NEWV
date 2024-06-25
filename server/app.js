@@ -18,6 +18,7 @@ app.use(cookieParser());
 app.use(morgan('dev'))
 app.use('/api/user',userRoutes);
 app.use('/api/form',formRoutes);
+
 app.all('*',(req,res)=>{
     res.status(404).send('OOPS!!! 404 page not found at all');
 })
