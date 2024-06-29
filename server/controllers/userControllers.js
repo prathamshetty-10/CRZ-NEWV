@@ -22,7 +22,8 @@ function generateJWTToken(phone,role,name){
 }
 const login=async(req,res,next)=>{
     try{
-        const {ph_no,otp,name}=req.body;
+        const {otp,name}=req.body;
+        const ph_no=req.body.mobile;
         const pool=await sql.connect(config);
         const data=pool.request().query(`select * from user_tb where ph_no='${ph_no}'`);
         data.then(async(res1)=>{
@@ -65,7 +66,8 @@ const login=async(req,res,next)=>{
 };
 const otp=async(req,res,next)=>{
     try{
-        const {ph_no,name}=req.body;
+        const {name}=req.body;
+        const ph_no=req.body.mobile;
         let role;
         if(ph_no==process.env.PHNO_ADMIN) role="ADMIN";
         else role="USER"

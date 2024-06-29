@@ -8,7 +8,7 @@ const router=express.Router();
 
 router.post('/getotp',otp);
 router.post('/login',login);
-router.get('/logout',isLoggedIn,logout);
+router.get('/logout',logout);
 
 
 export default router;
